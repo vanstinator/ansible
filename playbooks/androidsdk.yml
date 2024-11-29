@@ -1,7 +1,7 @@
 ---
 - name: Install Android SDK and NDK
   hosts: all
-  become: yes
+  # become: yes
   vars:
     android_sdk_version: "8512546"
     android_build_tools_version: "33.0.2"
