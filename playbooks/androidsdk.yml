@@ -30,6 +30,13 @@
         state: directory
         mode: '0755'
 
+    - name: Create Android SDK cmdline-tools directory
+      file:
+        path: "{{ android_sdk_path }}/cmdline-tools"
+        state: directory
+        mode: '0755'
+
+
     - name: Extract Android SDK tools
       unarchive:
         src: "/tmp/android-sdk.zip"
