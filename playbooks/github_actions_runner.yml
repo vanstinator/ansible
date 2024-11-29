@@ -1,0 +1,11 @@
+---
+- hosts: foo
+  roles:
+    - role: macunha1.github_actions_runner
+      vars:
+        gh_runner_config_labels:
+          - macos
+          - self-hosted
+
+        gh_runner_config_url: lookup('ansible.builtin.env', 'GH_RUNNER_URL')
+        gh_runner_config_token: lookup('ansible.builtin.env', 'GH_TOKEN_02')

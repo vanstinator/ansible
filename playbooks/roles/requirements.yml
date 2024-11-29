@@ -1,4 +1,7 @@
 collections:
   - "community.general"
-# roles:
-#   - name: FGtatsuro.android
+
+roles:
+  - version: master
+    name: macunha1.github_actions_runner
+    src: "https://github.com/macunha1/ansible-github-actions-runner"
