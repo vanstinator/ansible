@@ -1,9 +1,3 @@
-- hosts: all
-  roles:
-    - android_sdk
-
-# ... existing code ...
-
 - name: Android SDK and NDK
   hosts: all
   become: yes
