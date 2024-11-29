@@ -1,2 +1,5 @@
-collections:
-  - "ansible.utils"
+# collections:
+#   - "ansible.utils"
+
+roles:
+  - name: FGtatsuro.android
