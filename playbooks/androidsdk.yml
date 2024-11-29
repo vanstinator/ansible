@@ -8,6 +8,7 @@
     android_sdk_checksum: "sha256:7bc5c72ba0275c80a8f19684fb92793b83a6b5c94d4d179fc5988930282d7e64"
     android_build_tools_version: "34.0.0"
     android_platform_versions:
+      - "android-28"
       - "android-34"
       - "android-35"
     android_ndk_version: "25.2.9519653"
