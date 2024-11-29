@@ -14,7 +14,7 @@
     - name: Install dependencies
       homebrew:
         name:
-          - openjdk@11
+          - temurin@17
           - unzip
         state: present
         update_homebrew: yes
