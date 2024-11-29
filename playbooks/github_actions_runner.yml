@@ -1,5 +1,5 @@
 ---
-- hosts: foo
+- hosts: ci-02.local 
   roles:
     - role: macunha1.github_actions_runner
       vars:
