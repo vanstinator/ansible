@@ -3,10 +3,11 @@
   hosts: all
   # become: yes
   vars:
+    user: "justin"
     android_sdk_version: "8512546"
     android_build_tools_version: "33.0.2"
     android_ndk_version: "25.2.9519653"
-    android_sdk_path: "/Users/Shared/Android/sdk"
+    android_sdk_path: "/Users/{{user}}/Android/sdk"
     android_ndk_path: "{{ android_sdk_path }}/ndk/{{ android_ndk_version }}"
 
   tasks:
