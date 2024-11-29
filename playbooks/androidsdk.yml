@@ -1,0 +1,32 @@
+---
+- hosts: all
+    vars:
+    - android_user_home: ".android"
+    - android_adb_to_path: true
+    - android_sdkmanager_to_path: true
+    - android_cmdlinetools_bootstrap_build: 9123335
+    - android_cmdlinetools_bootstrap_checksum: "0bebf59339eaa534f4217f8aa0972d14dc49e7207be225511073c661ae01da0a"
+    - android_requested_sdk:
+        build_tools:
+        - version: "33.0.0"
+          channel: 2
+        platforms:
+        - version: 33
+          channel: 0
+        platform_tools:
+          channel: 0
+        ndk:
+        - version: "25.0.8775105"
+          channel: 0
+        - version: "25.1.8937393"
+          channel: 0
+        cmake:
+        - version: "3.22.1"
+          channel: 0
+        - version: "3.6.4111459"
+          channel: 0
+      plugdev_users:
+        - stevens
+        - tina
+  roles:
+     - hth-android-sdk
