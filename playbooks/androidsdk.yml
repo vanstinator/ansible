@@ -10,7 +10,7 @@
       - "android-34"
       - "android-35"
     android_ndk_version: "25.2.9519653"
-    android_sdk_path: "/Users/{{user}}/Android/sdk"
+    android_sdk_path: "/Users/{{user}}/Library/Android/sdk"
     android_ndk_path: "{{ android_sdk_path }}/ndk/{{ android_ndk_version }}"
 
   tasks:
