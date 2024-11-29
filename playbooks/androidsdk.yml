@@ -58,9 +58,9 @@
         - "export ANDROID_NDK_HOME={{ android_ndk_path }}"
         - "export PATH=$PATH:{{ android_sdk_path }}/cmdline-tools/latest/bin:{{ android_sdk_path }}/platform-tools:{{ android_ndk_path }}"
 
-    - name: Accept Android SDK licenses
-      command: "yes | {{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager --licenses || true"
-      changed_when: false
+    # - name: Accept Android SDK licenses
+    #   command: "yes | {{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager --licenses || true"
+    #   changed_when: false
 
     - name: Install Android SDK components and NDK
       command: >
