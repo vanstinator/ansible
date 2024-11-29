@@ -5,6 +5,7 @@
   vars:
     user: "justin"
     android_sdk_version: "11076708"
+    android_sdk_checksum: "7bc5c72ba0275c80a8f19684fb92793b83a6b5c94d4d179fc5988930282d7e64"
     android_build_tools_version: "34.0.0"
     android_platform_versions:
       - "android-34"
@@ -32,6 +33,7 @@
       get_url:
         url: "https://dl.google.com/android/repository/commandlinetools-mac-{{ android_sdk_version }}_latest.zip"
         dest: "/tmp/android-sdk.zip"
+        checksum: "{{android_sdk_checksum}}"
 
     - name: Create Android SDK directory
       file:
