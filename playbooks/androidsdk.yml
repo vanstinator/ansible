@@ -4,8 +4,11 @@
   # become: yes
   vars:
     user: "justin"
-    android_sdk_version: "8512546"
-    android_build_tools_version: "33.0.1"
+    android_sdk_version: "11076708"
+    android_build_tools_version: "34.0.0"
+    android_platform_versions:
+      - "android-34"
+      - "android-35"
     android_ndk_version: "25.2.9519653"
     android_sdk_path: "/Users/{{user}}/Android/sdk"
     android_ndk_path: "{{ android_sdk_path }}/ndk/{{ android_ndk_version }}"
@@ -74,6 +77,11 @@
         "platform-tools" 
         "build-tools;{{ android_build_tools_version }}"
         "ndk;{{ android_ndk_version }}"
+      changed_when: false
+
+    - name: Install Android SDK platforms
+      command: "{{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager 'platforms;{{ item }}'"
+      loop: "{{ android_platform_versions }}"
       changed_when: false
 
     - name: Ensure correct permissions for Android SDK directory
