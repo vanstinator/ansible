@@ -1,3 +1,77 @@
 - hosts: all
   roles:
-     - { role: FGtatsuro.android }
+    - android_sdk
+
+# ... existing code ...
+
+- name: Android SDK and NDK
+  hosts: all
+  become: yes
+  vars:
+    android_sdk_version: "8512546"  # This is the latest version as of 2023
+    android_build_tools_version: "33.0.2"
+    android_ndk_version: "25.2.9519653"
+    android_sdk_path: "/Users/Shared/Android/sdk"
+    android_ndk_path: "{{ android_sdk_path }}/ndk/{{ android_ndk_version }}"
+  
+  tasks:
+    - name: Install dependencies
+      homebrew:
+        name:
+          - openjdk@11
+          - unzip
+        state: present
+        update_homebrew: yes
+
+    - name: Download Android SDK tools
+      get_url:
+        url: "https://dl.google.com/android/repository/commandlinetools-mac-{{ android_sdk_version }}_latest.zip"
+        dest: "/tmp/android-sdk.zip"
+
+    - name: Create Android SDK directory
+      file:
+        path: "{{ android_sdk_path }}"
+        state: directory
+        mode: '0755'
+
+    - name: Extract Android SDK tools
+      unarchive:
+        src: "/tmp/android-sdk.zip"
+        dest: "{{ android_sdk_path }}/cmdline-tools"
+        remote_src: yes
+
+    - name: Rename cmdline-tools directory
+      command: mv {{ android_sdk_path }}/cmdline-tools/cmdline-tools {{ android_sdk_path }}/cmdline-tools/latest
+      args:
+        creates: "{{ android_sdk_path }}/cmdline-tools/latest"
+
+    - name: Set up Android SDK environment variables
+      lineinfile:
+        path: "{{ ansible_env.HOME }}/.zshrc"
+        line: "{{ item }}"
+        create: yes
+      loop:
+        - "export ANDROID_HOME={{ android_sdk_path }}"
+        - "export ANDROID_NDK_HOME={{ android_ndk_path }}"
+        - "export PATH=$PATH:{{ android_sdk_path }}/cmdline-tools/latest/bin:{{ android_sdk_path }}/platform-tools:{{ android_ndk_path }}"
+
+    - name: Accept Android SDK licenses
+      command: "yes | {{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager --licenses"
+      changed_when: false
+
+    - name: Install Android SDK components and NDK
+      command: >
+        {{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager 
+        "platform-tools" 
+        "build-tools;{{ android_build_tools_version }}"
+        "ndk;{{ android_ndk_version }}"
+      changed_when: false
+
+    - name: Ensure correct permissions for Android SDK directory
+      file:
+        path: "{{ android_sdk_path }}"
+        state: directory
+        recurse: yes
+        owner: "{{ ansible_user_id }}"
+        group: "staff"
+        mode: 'u+rwX,g+rX,o+rX'
