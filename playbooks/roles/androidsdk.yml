@@ -1,13 +1,14 @@
-- name: Android SDK and NDK
+---
+- name: Install Android SDK and NDK
   hosts: all
   become: yes
   vars:
-    android_sdk_version: "8512546"  # This is the latest version as of 2023
+    android_sdk_version: "8512546"
     android_build_tools_version: "33.0.2"
     android_ndk_version: "25.2.9519653"
     android_sdk_path: "/Users/Shared/Android/sdk"
     android_ndk_path: "{{ android_sdk_path }}/ndk/{{ android_ndk_version }}"
-  
+
   tasks:
     - name: Install dependencies
       homebrew:
