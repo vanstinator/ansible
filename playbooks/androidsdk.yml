@@ -72,6 +72,10 @@
     - name: Reset SSH Connection
       ansible.builtin.meta: reset_connection
 
+    - name: Log the path
+      debug:
+        msg: "{{ ansible_env.PATH }}"
+
     # - name: Accept Android SDK licenses
     #   command: "yes | {{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager --licenses || true"
     #   changed_when: false
