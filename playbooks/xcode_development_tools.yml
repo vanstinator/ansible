@@ -1,0 +1,4 @@
+---
+- hosts: all
+  roles:
+    - lhazlewood.xcode_clt

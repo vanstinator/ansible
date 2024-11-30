@@ -3,7 +3,7 @@
   hosts: all
   # become: yes
   vars:
-    user: "justin"
+    user: "runner"
     android_sdk_version: "11076708"
     android_sdk_checksum: "sha256:7bc5c72ba0275c80a8f19684fb92793b83a6b5c94d4d179fc5988930282d7e64"
     android_build_tools_version: "34.0.0"
