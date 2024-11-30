@@ -1,6 +1,11 @@
 ---
 - hosts: ci-02 
 
+  tasks:
+    - name: Log the path
+      debug:
+        msg: "{{ ansible_env.PATH }}"
+
   roles:
     - role: macunha1.github_actions_runner
       vars:
