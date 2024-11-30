@@ -1,4 +1,7 @@
 ---
 - hosts: all
+  vars:
+    xcode_xip_location: "/Users/runner/Downloads/Xcode_16.1.xip"
+    xcode_major_version: "16"
   roles:
-    - lhazlewood.xcode_clt
+    - macstadium.xcode
