@@ -15,6 +15,13 @@
     android_ndk_path: "{{ android_sdk_path }}/ndk/{{ android_ndk_version }}"
 
   tasks:
+
+    - name: Install Homebrew
+      become: yes
+      ansible.builtin.command: /bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      args:
+        creates: /opt/homebrew/bin/brew
+
     - name: Install dependencies
       homebrew:
         name:
