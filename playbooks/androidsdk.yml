@@ -20,6 +20,7 @@
         name:
           - temurin@17
           - unzip
+          - gnu-tar
         state: present
         update_homebrew: yes
 
@@ -61,7 +62,7 @@
       loop:
         - "export ANDROID_HOME={{ android_sdk_path }}"
         - "export ANDROID_NDK_HOME={{ android_ndk_path }}"
-        - "export PATH=$PATH:{{ android_sdk_path }}/cmdline-tools/latest/bin:{{ android_sdk_path }}/platform-tools:{{ android_ndk_path }}"
+        - "export PATH=$PATH:{{ android_sdk_path }}/cmdline-tools/latest/bin:{{ android_sdk_path }}/platform-tools:{{ android_ndk_path }}:/usr/local/opt/gnu-tar/libexec/gnubin"
 
     # - name: Accept Android SDK licenses
     #   command: "yes | {{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager --licenses || true"
