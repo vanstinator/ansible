@@ -23,5 +23,5 @@
         gh_runner_name: "ci-02-new"
         gh_runner_service_user: "justin"
 
-        gh_runner_config_url: lookup('ansible.builtin.env', 'GH_RUNNER_URL')
-        gh_runner_config_token: lookup('ansible.builtin.env', 'GH_RUNNER_TOKEN_02')
+        gh_runner_config_url: "{{lookup('ansible.builtin.env', 'GH_RUNNER_URL')}}"
+        gh_runner_config_token: "{{lookup('ansible.builtin.env', 'GH_RUNNER_TOKEN_02')}}"
