@@ -8,6 +8,8 @@
 
         gh_runner_version: "2.321.0"
 
+        gh_runner_architecture: "osx-arm64"
+
         gh_runner_config_labels:
           - macos
           - self-hosted
