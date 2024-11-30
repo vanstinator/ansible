@@ -55,19 +55,13 @@
 
     - name: Set up Android SDK environment variables
       lineinfile:
-        path: "{{ ansible_env.HOME }}/.zshrc"
+        path: "{{ ansible_env.HOME }}/.zshenv"
         line: "{{ item }}"
         create: yes
       loop:
         - "export ANDROID_HOME={{ android_sdk_path }}"
         - "export ANDROID_NDK_HOME={{ android_ndk_path }}"
         - "export PATH={{ android_sdk_path }}/cmdline-tools/latest/bin:{{ android_sdk_path }}/platform-tools:{{ android_ndk_path }}:$HOMEBREW_PREFIX/opt/gnu-tar/libexec/gnubin:$PATH"
-
-    - name: Set up .zprofile to load .zshrc
-      lineinfile:
-        path: "{{ ansible_env.HOME }}/.zprofile"
-        line: "source $HOME/.zshrc"
-        create: yes
 
     - name: Reset SSH Connection
       ansible.builtin.meta: reset_connection
