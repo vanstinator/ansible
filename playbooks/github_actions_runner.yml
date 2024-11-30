@@ -1,20 +1,16 @@
 ---
 - hosts: ci-02 
 
-  tasks:
-    - name: Install dependencies
-      homebrew:
-        name:
-          - unzip
-        state: present
-        update_homebrew: yes
-
   roles:
     - role: macunha1.github_actions_runner
       vars:
         gh_runner_config_labels:
           - macos
           - self-hosted
+        gh_runner_installation_path: "/Users/justin/actions-runner2"
+        gh_runner_workspace_path: "/Users/justin/actions-runner2/_work"
+        gh_runner_name: "ci-02-new"
+        gh_runner_service_user: "justin"
 
         gh_runner_config_url: lookup('ansible.builtin.env', 'GH_RUNNER_URL')
         gh_runner_config_token: lookup('ansible.builtin.env', 'GH_RUNNER_TOKEN_02')
