@@ -4,6 +4,8 @@
   roles:
     - role: macunha1.github_actions_runner
       vars:
+        tmp_download_path: "/Users/justin/Downloads"
+
         gh_runner_config_labels:
           - macos
           - self-hosted
