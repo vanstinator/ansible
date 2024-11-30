@@ -64,6 +64,9 @@
         - "export ANDROID_NDK_HOME={{ android_ndk_path }}"
         - "export PATH=$PATH:{{ android_sdk_path }}/cmdline-tools/latest/bin:{{ android_sdk_path }}/platform-tools:{{ android_ndk_path }}:/usr/local/opt/gnu-tar/libexec/gnubin"
 
+    - name: Source the .zshrc file
+      command: source {{ ansible_env.HOME }}/.zshrc
+
     # - name: Accept Android SDK licenses
     #   command: "yes | {{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager --licenses || true"
     #   changed_when: false
