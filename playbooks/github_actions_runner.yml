@@ -1,5 +1,14 @@
 ---
 - hosts: ci-02 
+
+  tasks:
+    - name: Install dependencies
+      homebrew:
+        name:
+          - unzip
+        state: present
+        update_homebrew: yes
+
   roles:
     - role: macunha1.github_actions_runner
       vars:

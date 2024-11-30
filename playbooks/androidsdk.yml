@@ -19,14 +19,8 @@
       homebrew:
         name:
           - temurin@17
-        state: present
-        update_homebrew: yes
-
-    - name: Uninstall dependencies
-      homebrew:
-        name:
           - unzip
-        state: uninstalled
+        state: present
         update_homebrew: yes
 
     - name: Download Android SDK tools
