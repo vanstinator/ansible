@@ -90,7 +90,7 @@
 
     - name: Install Android SDK components and NDK
       command: >
-        yes | {{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager 
+        echo y | {{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager 
         "platform-tools" 
         "build-tools;{{ android_build_tools_version }}"
         "ndk;{{ android_ndk_version }}"
