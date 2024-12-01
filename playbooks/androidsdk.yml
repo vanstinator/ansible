@@ -95,7 +95,7 @@
         "build-tools;{{ android_build_tools_version }}"
         "ndk;{{ android_ndk_version }}"
       changed_when: false
-      async: 120
+      async: 600
       poll: 10
 
 
