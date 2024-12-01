@@ -15,10 +15,18 @@
     android_ndk_path: "{{ android_sdk_path }}/ndk/{{ android_ndk_version }}"
 
   tasks:
-    - name: Install dependencies
+    - name: brew tap homebrew/cask-versions cask
+      community.general.homebrew_tap:
+        name: homebrew/cask-versions
+      
+    - name: brew iInstall Temurin JDK 17
+      community.general.homebrew_cask:
+        name: temurin@17
+        state: present
+
+    - name: brew install additional dependencies
       homebrew:
         name:
-          - temurin@17
           - unzip
           - gnu-tar
         state: present
