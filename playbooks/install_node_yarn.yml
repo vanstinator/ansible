@@ -1,0 +1,15 @@
+---
+- hosts: all
+  tasks:
+    - name: Install Volta
+      community.general.homebrew:
+        name: volta
+        state: present
+
+    - name: Install Node.js
+      ansible.builtin.command:
+        cmd: volta install node@18
+
+    - name: Install Yarn
+      ansible.builtin.command:
+        cmd: volta install yarn@4
