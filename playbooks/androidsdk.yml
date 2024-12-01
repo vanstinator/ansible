@@ -18,9 +18,11 @@
 
     - name: Install Homebrew
       become: yes
-      ansible.builtin.command: /bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      ansible.builtin.shell: |
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
       args:
         creates: /opt/homebrew/bin/brew
+
 
     - name: Install dependencies
       homebrew:
