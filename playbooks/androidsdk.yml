@@ -75,7 +75,7 @@
       loop:
         - "export ANDROID_HOME={{ android_sdk_path }}"
         - "export ANDROID_NDK_HOME={{ android_ndk_path }}"
-        - "export PATH={{ android_sdk_path }}/cmdline-tools/latest/bin:{{ android_sdk_path }}/platform-tools:{{ android_ndk_path }}:/opt/homebrew/opt/gnu-tar/libexec/gnubin:$PATH"
+        - "export PATH={{ android_sdk_path }}/cmdline-tools/latest/bin:{{ android_sdk_path }}/platform-tools:{{ android_ndk_path }}:/opt/homebrew/opt/gnu-tar/libexec/gnubin:/Users/runner/.volta/bin:$PATH"
 
     - name: Reset SSH Connection
       ansible.builtin.meta: reset_connection
