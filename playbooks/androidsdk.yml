@@ -35,6 +35,7 @@
         name:
           - unzip
           - gnu-tar
+          - git
         state: present
         update_homebrew: yes
 
