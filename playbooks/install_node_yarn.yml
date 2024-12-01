@@ -5,6 +5,7 @@
       community.general.homebrew:
         name: volta
         state: present
+        force_formula: yes
 
     - name: Install Node.js
       ansible.builtin.command:
