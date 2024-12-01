@@ -15,8 +15,16 @@
     android_ndk_path: "{{ android_sdk_path }}/ndk/{{ android_ndk_version }}"
 
   tasks:     
-    - name: brew iInstall Temurin JDK 17
+    - name: Make users passwordless for sudo in group runner
       become: yes
+      lineinfile:
+        path: /etc/sudoers
+        state: present
+        regexp: '^%admin'
+        line: '%admin ALL=(ALL) NOPASSWD: ALL'
+        validate: 'visudo -cf %s'
+
+    - name: brew iInstall Temurin JDK 17
       community.general.homebrew:
         name: 
           - temurin@17
