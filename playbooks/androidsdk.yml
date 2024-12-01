@@ -17,7 +17,6 @@
   tasks:
 
     - name: Install Homebrew
-      become: yes
       ansible.builtin.shell: |
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
       args:
