@@ -84,9 +84,9 @@
       debug:
         msg: "{{ ansible_env.PATH }}"
 
-    # - name: Accept Android SDK licenses
-    #   command: "yes | {{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager --licenses || true"
-    #   changed_when: false
+    - name: Accept Android SDK licenses
+      command: "echo y | {{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager --licenses || true"
+      changed_when: false
 
     - name: Install Android SDK components and NDK
       command: >
@@ -95,9 +95,6 @@
         "build-tools;{{ android_build_tools_version }}"
         "ndk;{{ android_ndk_version }}"
       changed_when: false
-      async: 600
-      poll: 10
-
 
     - name: Install Android SDK platforms
       command: "{{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager 'platforms;{{ item }}'"
