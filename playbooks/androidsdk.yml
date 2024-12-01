@@ -70,12 +70,19 @@
     - name: Set up Android SDK environment variables
       lineinfile:
         path: "{{ ansible_env.HOME }}/.zshenv"
-        line: "{{ item }}"
+        regexp: "^export {{ item.var }}=.*"
+        line: "export {{ item.var }}={{ item.value }}"
         create: yes
       loop:
-        - "export ANDROID_HOME={{ android_sdk_path }}"
-        - "export ANDROID_NDK_HOME={{ android_ndk_path }}"
-        - "export PATH={{ android_sdk_path }}/cmdline-tools/latest/bin:{{ android_sdk_path }}/platform-tools:{{ android_ndk_path }}:/opt/homebrew/opt/gnu-tar/libexec/gnubin:/Users/runner/.volta/bin:/opt/homebrew/opt/volta/libexec/bin:$PATH"
+        - { var: "ANDROID_HOME", value: "{{ android_sdk_path }}" }
+        - { var: "ANDROID_NDK_HOME", value: "{{ android_ndk_path }}" }
+
+    - name: Set up PATH environment variable
+      lineinfile:
+        path: "{{ ansible_env.HOME }}/.zshenv"
+        regexp: "^export PATH=.*"
+        line: "export PATH={{ android_sdk_path }}/cmdline-tools/latest/bin:{{ android_sdk_path }}/platform-tools:{{ android_ndk_path }}:/opt/homebrew/opt/gnu-tar/libexec/gnubin:/Users/runner/.volta/bin:/opt/homebrew/opt/volta/libexec/bin:$PATH"
+        create: yes
 
     - name: Reset SSH Connection
       ansible.builtin.meta: reset_connection
