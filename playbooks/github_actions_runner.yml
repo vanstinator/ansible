@@ -3,7 +3,7 @@
 
   vars:
     gh_runner_version: "2.321.0"
-    gh_runner_installation_path: "/Users/runner/actions-runner2"
+    gh_runner_installation_path: "/Users/runner/actions-runner"
     gh_runner_config_url: "{{lookup('ansible.builtin.env', 'GH_RUNNER_URL')}}"
 
   roles:
@@ -16,8 +16,8 @@
         gh_runner_config_labels:
           - macos
           - self-hosted
-        gh_runner_installation_path: "/Users/runner/actions-runner2"
-        gh_runner_workspace_path: "/Users/runner/actions-runner2/_work"
+        gh_runner_installation_path: "/Users/runner/actions-runner"
+        gh_runner_workspace_path: "/Users/runner/actions-runner/_work"
         gh_runner_service_user: "runner"
 
         # remove once we're done building this out
@@ -29,11 +29,11 @@
   tasks:
     - name: Remove the .env file if it exists
       ansible.builtin.file:
-        path: "/Users/runner/actions-runner2/{{ gh_runner_version }}/{{ gh_runner_config_url | hash('sha256') }}/.env"
+        path: "/Users/runner/actions-runner/{{ gh_runner_version }}/{{ gh_runner_config_url | hash('sha256') }}/.env"
         state: absent
 
     - name: Replace the .env file with the contents of the .zshenv file
       ansible.builtin.copy:
         src: "/Users/runner/.zshenv"
-        dest: "/Users/runner/actions-runner2/{{ gh_runner_version }}/{{ gh_runner_config_url | hash('sha256') }}/.env"
+        dest: "/Users/runner/actions-runner/{{ gh_runner_version }}/{{ gh_runner_config_url | hash('sha256') }}/.env"
         remote_src: yes
