@@ -24,11 +24,6 @@
         line: '%admin ALL=(ALL) NOPASSWD: ALL'
         validate: 'visudo -cf %s'
 
-    - name: Install pexpect library
-      ansible.builtin.pip:
-        name: pexpect
-        state: present
-
     - name: brew install Temurin JDK 17
       community.general.homebrew:
         name: 
@@ -39,7 +34,6 @@
       homebrew:
         name:
           - ccache
-          - expect
           - git
           - gnu-tar
           - unzip
