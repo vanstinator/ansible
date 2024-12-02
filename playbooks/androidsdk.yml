@@ -24,8 +24,14 @@
         line: '%admin ALL=(ALL) NOPASSWD: ALL'
         validate: 'visudo -cf %s'
 
+    - name: Check if Spotlight is enabled
+      command: mdutil -s /
+      register: spotlight_status
+      changed_when: false
+
     - name: Disable Spotlight
       command: sudo mdutil -a -i off
+      when: "'Indexing enabled.' in spotlight_status.stdout"
 
     - name: brew install Temurin JDK 17
       community.general.homebrew:

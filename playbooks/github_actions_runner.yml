@@ -34,7 +34,7 @@
 
     - name: Replace the .env file with the contents of the .zshenv file without "export " strings and skip PATH variable
       ansible.builtin.shell: |
-        sed -n '/^export /{/^export PATH=/!s/^export //p}' /Users/runner/.zshenv > /Users/runner/actions-runner/{{ gh_runner_version }}/{{ gh_runner_config_url | hash('sha256') }}/.env
+        grep '^export ' /Users/runner/.zshenv | sed '/^export PATH=/d; s/^export //' > /Users/runner/actions-runner/{{ gh_runner_version }}/{{ gh_runner_config_url | hash('sha256') }}/.env
         echo "$PATH" > /Users/runner/actions-runner/{{ gh_runner_version }}/{{ gh_runner_config_url | hash('sha256') }}/.path
 
     - name: Restart the runner service
