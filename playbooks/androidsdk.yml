@@ -95,6 +95,7 @@
           - "/Users/runner/node_modules/.bin"
           - "/Users/runner/actions-runner/_work/_tool"
           - "/opt/homebrew/bin/yarn"
+          - "/opt/homebrew/opt/gnu-tar/libexec/gnubin"
 
     - name: Reset SSH Connection
       ansible.builtin.meta: reset_connection
