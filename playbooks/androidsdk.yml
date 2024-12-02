@@ -24,6 +24,9 @@
         line: '%admin ALL=(ALL) NOPASSWD: ALL'
         validate: 'visudo -cf %s'
 
+    - name: Disable Spotlight
+      command: sudo mdutil -a -i off
+
     - name: brew install Temurin JDK 17
       community.general.homebrew:
         name: 
