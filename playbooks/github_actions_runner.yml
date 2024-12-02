@@ -36,3 +36,8 @@
       ansible.builtin.shell: |
         sed '/^export PATH=/d; s/^export //' /Users/runner/.zshenv > /Users/runner/actions-runner/{{ gh_runner_version }}/{{ gh_runner_config_url | hash('sha256') }}/.env
         echo "PATH=$PATH" >> /Users/runner/actions-runner/{{ gh_runner_version }}/{{ gh_runner_config_url | hash('sha256') }}/.env
+
+    - name: Restart the runner service
+      ansible.builtin.command: |
+        launchctl unload /Library/LaunchDaemons/com.github.runner.{{ gh_runner_config_name }}.plist
+        launchctl load /Library/LaunchDaemons/com.github.runner.{{ gh_runner_config_name }}.plist
