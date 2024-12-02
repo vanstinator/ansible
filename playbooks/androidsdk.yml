@@ -91,6 +91,7 @@
           - "{{ android_ndk_path }}"
           - "/opt/homebrew/opt/gnu-tar/libexec/gnubin"
           - "/Users/runner/node_modules/.bin"
+          - "/Users/runner/actions-runner/_work/_tool"
           - "/Users/runner/.volta/bin"
           - "/opt/homebrew/opt/volta/libexec/bin"
 

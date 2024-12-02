@@ -14,3 +14,8 @@
     - name: Install Yarn
       ansible.builtin.command:
         cmd: volta install yarn@4
+
+    - name: Install eas-cli
+      ansible.builtin.command:
+        cmd: npm install eas-cli@10.2.1
+        chdir: "{{ ansible_env.HOME }}"
