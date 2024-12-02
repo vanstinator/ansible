@@ -32,8 +32,7 @@
         path: "/Users/runner/actions-runner/{{ gh_runner_version }}/{{ gh_runner_config_url | hash('sha256') }}/.env"
         state: absent
 
-    - name: Replace the .env file with the contents of the .zshenv file
-      ansible.builtin.copy:
-        src: "/Users/runner/.zshenv"
-        dest: "/Users/runner/actions-runner/{{ gh_runner_version }}/{{ gh_runner_config_url | hash('sha256') }}/.env"
-        remote_src: yes
+    - name: Replace the .env file with the contents of the .zshenv file without "export " strings and skip PATH variable
+      ansible.builtin.shell: |
+        sed '/^export PATH=/d; s/^export //' /Users/runner/.zshenv > /Users/runner/actions-runner/{{ gh_runner_version }}/{{ gh_runner_config_url | hash('sha256') }}/.env
+        echo "PATH=$PATH" >> /Users/runner/actions-runner/{{ gh_runner_version }}/{{ gh_runner_config_url | hash('sha256') }}/.env
