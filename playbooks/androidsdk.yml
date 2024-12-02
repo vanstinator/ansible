@@ -129,24 +129,24 @@
           'Accept? (y/N)': 'y'
 
     - name: Install Android SDK components and NDK
-      command: >
-        echo y | {{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager 
-        "platform-tools" 
-        "build-tools;{{ android_build_tools_version }}"
-        "ndk;{{ android_ndk_version }}"
-      changed_when: false
+      expect:
+        command: >
+          echo y | {{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager 
+          "platform-tools" 
+        creates: "{{ android_sdk_path }}/platform-tools"
+        responses:
+          'Accept? (y/N)': 'y'
 
-    - name: Install Android SDK platforms
-      command: "{{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager 'platforms;{{ item }}'"
-      loop: "{{ android_platform_versions }}"
-      changed_when: false
+    # - name: Install Android SDK platforms
+    #   command: "{{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager 'platforms;{{ item }}'"
+    #   loop: "{{ android_platform_versions }}"
+    #   changed_when: false
 
-    - name: Uninstall Android SDK platforms not in the desired list
-      command: "{{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager --uninstall 'platforms;{{ item }}'"
-      loop: "{{ sdk_list.stdout_lines | select('match', '^  platforms;android-') | map('regex_replace', '^  platforms;(android-[0-9]+)', '\\1') | difference(android_platform_versions) }}"
-      when: item is defined
-      changed_when: false
-
+    # - name: Uninstall Android SDK platforms not in the desired list
+    #   command: "{{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager --uninstall 'platforms;{{ item }}'"
+    #   loop: "{{ sdk_list.stdout_lines | select('match', '^  platforms;android-') | map('regex_replace', '^  platforms;(android-[0-9]+)', '\\1') | difference(android_platform_versions) }}"
+    #   when: item is defined
+    #   changed_when: false
 
     - name: Ensure correct permissions for Android SDK directory
       file:
