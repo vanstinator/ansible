@@ -107,6 +107,11 @@
       command: "echo y | {{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager --licenses || true"
       changed_when: false
 
+      # Maestro has a specific version of the Android SDK that it requires when creating an emulator, so we install the one it wants.
+    - name: Install Maestro Android SDK version
+      command: "echo y | {{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager 'system-images;android-34;google_apis;arm64-v8a'"
+      changed_when: false
+
     - name: Install Android SDK components and NDK
       command: >
         echo y | {{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager 
