@@ -33,9 +33,10 @@
     - name: brew install additional dependencies
       homebrew:
         name:
-          - unzip
-          - gnu-tar
+          - ccache
           - git
+          - gnu-tar
+          - unzip
         state: present
         update_homebrew: yes
 
