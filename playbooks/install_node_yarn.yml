@@ -5,6 +5,7 @@
       community.general.homebrew:
         name:
           - node
+          - npm
           - yarn
         state: present
         force_formula: yes
