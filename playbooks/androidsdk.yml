@@ -129,14 +129,11 @@
       args:
         creates: "{{ android_sdk_path }}/emulator"
 
-    # - name: Install Android SDK components and NDK
-    #   expect:
-    #     command: >
-    #       echo y | {{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager 
-    #       "platform-tools" 
-    #     creates: "{{ android_sdk_path }}/platform-tools"
-    #     responses:
-    #       'Accept? (y/N)': 'y'
+    - name: Install Android SDK components and NDK
+      ansible.builtin.shell: |
+          yes | {{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager "platform-tools"
+      args:
+        creates: "{{ android_sdk_path }}/platform-tools"
 
     # - name: Install Android SDK platforms
     #   command: "{{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager 'platforms;{{ item }}'"
