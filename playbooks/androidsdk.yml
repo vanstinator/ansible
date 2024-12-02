@@ -34,6 +34,7 @@
       homebrew:
         name:
           - ccache
+          - expect
           - git
           - gnu-tar
           - unzip
@@ -109,13 +110,18 @@
 
       # Maestro has a specific version of the Android SDK that it requires when creating an emulator, so we install the one it wants.
     - name: Install Maestro Android SDK version
-      command: "echo y | {{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager 'system-images;android-34;google_apis;arm64-v8a'"
-      changed_when: false
+      expect:
+        command: "{{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager 'system-images;android-34;google_apis;arm64-v8a'"
+        responses:
+          'Accept? (y/N)': 'y'
 
     - name: Install Android emulator
-      command: "echo y | {{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager 'emulator'"
-      args:
-        creates: "{{ android_sdk_path }}/emulator"
+      expect:
+        command: "{{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager 'emulator'"
+        args:
+            creates: "{{ android_sdk_path }}/emulator"
+        responses:
+          'Accept? (y/N)': 'y'
 
     - name: Install Android SDK components and NDK
       command: >
