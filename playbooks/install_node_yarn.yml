@@ -3,17 +3,11 @@
   tasks:
     - name: Install Volta
       community.general.homebrew:
-        name: volta
+        name:
+          - node
+          - yarn
         state: present
         force_formula: yes
-
-    - name: Install Node.js
-      ansible.builtin.command:
-        cmd: volta install node@18
-
-    - name: Install Yarn
-      ansible.builtin.command:
-        cmd: volta install yarn@4
 
     - name: Install eas-cli
       ansible.builtin.command:
