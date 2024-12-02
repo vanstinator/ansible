@@ -81,6 +81,14 @@
         - { var: "ANDROID_NDK_HOME", value: "{{ android_ndk_path }}" }
         - { var: "EAS_LOCAL_BUILD_WORKINGDIR", value: "/Users/runner/actions-runner/_work/rescuebase2/rescuebase2/eas" }
 
+        
+    - name: Add Homebrew shellenv to .zshenv
+      ansible.builtin.lineinfile:
+        path: "{{ ansible_env.HOME }}/.zshenv"
+        line: 'eval "$(/opt/homebrew/bin/brew shellenv)"'
+        insertafter: BOF
+        state: present
+
     - name: Set up environment variables
       lineinfile:
         path: "{{ ansible_env.HOME }}/.zshenv"
