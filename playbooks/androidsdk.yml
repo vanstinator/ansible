@@ -77,6 +77,7 @@
       loop:
         - { var: "ANDROID_HOME", value: "{{ android_sdk_path }}" }
         - { var: "ANDROID_NDK_HOME", value: "{{ android_ndk_path }}" }
+        - { var: "EAS_LOCAL_BUILD_WORKINGDIR", value: "/Users/runner/actions-runner/_work/rescuebase2/rescuebase2/eas" }
 
     - name: Set up environment variables
       lineinfile:
