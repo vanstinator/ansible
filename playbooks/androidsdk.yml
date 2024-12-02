@@ -123,8 +123,7 @@
     - name: Install Android emulator
       expect:
         command: "{{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager 'emulator'"
-        args:
-            creates: "{{ android_sdk_path }}/emulator"
+        creates: "{{ android_sdk_path }}/emulator"
         responses:
           'Accept? (y/N)': 'y'
 
