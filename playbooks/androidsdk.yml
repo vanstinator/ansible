@@ -33,6 +33,18 @@
       command: sudo mdutil -a -i off
       when: "'Indexing enabled.' in spotlight_status.stdout"
 
+    - name: Check if sleep is enabled
+      become: yes
+      ansible.builtin.shell: pmset -g | grep hibernatemode
+      register: sleep_status
+      changed_when: false
+      ignore_errors: yes
+
+    - name: Disable sleep
+      become: yes
+      command: sudo pmset -a hibernatemode 0
+      when: "'hibernatemode 3' in sleep_status.stdout"
+
     - name: brew install Temurin JDK 17
       community.general.homebrew:
         name: 
