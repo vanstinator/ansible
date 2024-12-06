@@ -27,6 +27,11 @@
         gh_runner_config_token: "{{lookup('ansible.builtin.env', 'GH_RUNNER_TOKEN_02')}}"
 
   tasks:
+
+    - name: Autologin runner user
+      ansible.builtin.shell: |
+        sudo sysadminctl -autologin set -userName runner -password {{lookup('ansible.builtin.env', 'SUDO_PASSWORD')}}
+
     - name: Remove the .env file if it exists
       ansible.builtin.file:
         path: "/Users/runner/actions-runner/{{ gh_runner_version }}/{{ gh_runner_config_url | hash('sha256') }}/.env"

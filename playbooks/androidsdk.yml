@@ -14,7 +14,7 @@
     android_sdk_path: "/Users/{{user}}/Library/Android/sdk"
     android_ndk_path: "{{ android_sdk_path }}/ndk/{{ android_ndk_version }}"
 
-  tasks:     
+  tasks:
     - name: Make users passwordless for sudo in group runner
       become: yes
       lineinfile:
