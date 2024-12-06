@@ -41,3 +41,14 @@
       ansible.builtin.command: |
         launchctl unload /Library/LaunchDaemons/com.github.runner.{{ gh_runner_config_name }}.plist
         launchctl load /Library/LaunchDaemons/com.github.runner.{{ gh_runner_config_name }}.plist
+
+    - name: Create the restart.sh script
+      ansible.builtin.copy:
+        content: |
+          sudo shutdown -r +7s
+        dest: "/Users/runner/actions-runner/{{ gh_runner_version }}/{{ gh_runner_config_url | hash('sha256') }}/restart.sh"
+        mode: '0755'
+
+    - name: Add the ACTIONS_RUNNER_HOOK_JOB_COMPLETED to the .env file if it doesn't exist
+      ansible.builtin.shell: |
+        grep -q '^ACTIONS_RUNNER_HOOK_JOB_COMPLETED=' /Users/runner/actions-runner/{{ gh_runner_version }}/{{ gh_runner_config_url | hash('sha256') }}/.env || echo 'ACTIONS_RUNNER_HOOK_JOB_COMPLETED=/Users/runner/actions-runner/{{ gh_runner_version }}/{{ gh_runner_config_url | hash('sha256') }}/restart.sh' >> /Users/runner/actions-runner/{{ gh_runner_version }}/{{ gh_runner_config_url | hash('sha256') }}/.env
