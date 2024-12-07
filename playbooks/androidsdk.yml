@@ -15,6 +15,10 @@
     android_ndk_path: "{{ android_sdk_path }}/ndk/{{ android_ndk_version }}"
 
   tasks:
+
+    - name: Set macOS volume to 0
+      ansible.builtin.command: osascript -e 'set volume 0' 
+
     - name: Make users passwordless for sudo in group runner
       become: yes
       lineinfile:
