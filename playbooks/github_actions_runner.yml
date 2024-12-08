@@ -1,5 +1,5 @@
 ---
-- hosts: ci-02 
+- hosts: all 
 
   vars:
     gh_runner_version: "2.321.0"
@@ -24,7 +24,10 @@
         gh_runner_config_name: "ci-02"
 
         gh_runner_config_url: "{{lookup('ansible.builtin.env', 'GH_RUNNER_URL')}}"
-        gh_runner_config_token: "{{lookup('ansible.builtin.env', 'GH_RUNNER_TOKEN_02')}}"
+        gh_runner_config_token:
+          # ci-01: "{{ lookup('ansible.builtin.env', 'GH_RUNNER_TOKEN_01') }}"
+          ci-02: "{{ lookup('ansible.builtin.env', 'GH_RUNNER_TOKEN_02') }}"
+          ci-03: "{{ lookup('ansible.builtin.env', 'GH_RUNNER_TOKEN_03') }}"
 
   tasks:
 
