@@ -4,7 +4,17 @@
   vars:
     gh_runner_version: "2.321.0"
     gh_runner_installation_path: "/Users/runner/actions-runner"
+    gh_runner_tokens:
+      ci-01: "{{ lookup('ansible.builtin.env', 'GH_RUNNER_TOKEN_01') }}"
+      ci-02: "{{ lookup('ansible.builtin.env', 'GH_RUNNER_TOKEN_02') }}"
+      ci-03: "{{ lookup('ansible.builtin.env', 'GH_RUNNER_TOKEN_03') }}"
     gh_runner_config_url: "{{lookup('ansible.builtin.env', 'GH_RUNNER_URL')}}"
+    gh_runner_config_token: "{{ gh_runner_tokens[(group_names | intersect(gh_runner_tokens.keys())).0] }}"
+
+  pre_tasks:
+    - name: Debug GH_RUNNER_URL environment variable
+      ansible.builtin.debug:
+        msg: "GH_RUNNER_URL is {{ lookup('ansible.builtin.env', 'GH_RUNNER_URL') }}"
 
   roles:
     - role: macunha1.github_actions_runner
@@ -21,13 +31,7 @@
         gh_runner_service_user: "runner"
 
         # remove once we're done building this out
-        gh_runner_config_name: "ci-02"
-
-        gh_runner_config_url: "{{lookup('ansible.builtin.env', 'GH_RUNNER_URL')}}"
-        gh_runner_config_token:
-          # ci-01: "{{ lookup('ansible.builtin.env', 'GH_RUNNER_TOKEN_01') }}"
-          ci-02: "{{ lookup('ansible.builtin.env', 'GH_RUNNER_TOKEN_02') }}"
-          ci-03: "{{ lookup('ansible.builtin.env', 'GH_RUNNER_TOKEN_03') }}"
+        gh_runner_config_name: "{{(group_names | intersect(gh_runner_tokens.keys())).0}}"
 
   tasks:
 
