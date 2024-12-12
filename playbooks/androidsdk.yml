@@ -187,6 +187,20 @@
         src: "./shelter_records.jpg"
         dest: "~/test_photos/shelter_records.jpg"
 
+    - name: Raise the memory of the Maestro_Pixel_6_API_34_1 emulator config.ini file
+      ansible.builtin.lineinfile:
+        path: "{{ ansible_env.HOME }}/.android/avd/Maestro_Pixel_6_API_34_1.avd/config.ini"
+        regexp: '^hw.ramSize = '
+        line: 'hw.ramSize = 4096M'
+        backup: yes
+
+    - name: Raise the heap size of the Maestro_Pixel_6_API_34_1 emulator config.ini file
+      ansible.builtin.lineinfile:
+        path: "{{ ansible_env.HOME }}/.android/avd/Maestro_Pixel_6_API_34_1.avd/config.ini"
+        regexp: '^vm.heapSize = '
+        line: 'vm.heapSize = 512M'
+        backup: yes
+      
     - name: Start the Maestro_Pixel_6_API_34_1 emulator asynchronously
       ansible.builtin.shell: |
         {{ android_sdk_path }}/emulator/emulator -avd Maestro_Pixel_6_API_34_1
