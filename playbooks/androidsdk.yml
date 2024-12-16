@@ -176,3 +176,49 @@
         owner: "{{ ansible_user_id }}"
         group: "staff"
         mode: 'u+rwX,g+rX,o+rX'
+
+    - name: Create test_photos directory
+      ansible.builtin.file:
+        path: "~/test_photos"
+        state: directory
+  
+    - name: Copy the shelter_records.jpg file from this repo to the machine test_photos directory
+      ansible.builtin.copy:
+        src: "./shelter_records.jpg"
+        dest: "~/test_photos/shelter_records.jpg"
+
+    - name: Update the Maestro_Pixel_6_API_34_1 emulator config.ini file
+      ansible.builtin.lineinfile:
+        path: "{{ ansible_env.HOME }}/.android/avd/Maestro_Pixel_6_API_34_1.avd/config.ini"
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+        backup: yes
+      with_items:
+        - { regexp: '^hw.ramSize = ', line: 'hw.ramSize = 4096M' }
+        - { regexp: '^vm.heapSize = ', line: 'vm.heapSize = 512M' }
+        - { regexp: '^fastboot.forceChosenSnapshotBoot = ', line: 'fastboot.forceChosenSnapshotBoot = yes' }
+        - { regexp: '^fastboot.forceColdBoot = ', line: 'fastboot.forceColdBoot = no' }
+      
+    - name: Start the Maestro_Pixel_6_API_34_1 emulator asynchronously
+      ansible.builtin.shell: |
+        {{ android_sdk_path }}/emulator/emulator -avd Maestro_Pixel_6_API_34_1
+      args:
+        chdir: "{{ android_sdk_path }}/emulator"
+      async: 300
+      poll: 0
+
+    - name: Wait for the emulator to start
+      ansible.builtin.shell: |
+        while ! {{ android_sdk_path }}/platform-tools/adb shell getprop sys.boot_completed 2>/dev/null | grep -m 1 '1'; do sleep 5; done
+      register: emulator_start
+      retries: 12
+      delay: 10
+      until: emulator_start.rc == 0
+        
+    - name: Push the shelter_records.jpg file to the emulator
+      ansible.builtin.shell: |
+        {{ android_sdk_path }}/platform-tools/adb push ~/test_photos/shelter_records.jpg /sdcard/Pictures
+
+    - name: Shut down the emulator
+      ansible.builtin.shell: |
+        {{ android_sdk_path }}/platform-tools/adb emu kill
