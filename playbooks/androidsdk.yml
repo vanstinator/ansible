@@ -217,7 +217,7 @@
         
     - name: Push the shelter_records.jpg file to the emulator
       ansible.builtin.shell: |
-        {{ android_sdk_path }}/platform-tools/adb push ~/test_photos/shelter_records.jpg /sdcard/Pictures
+        {{ android_sdk_path }}/platform-tools/adb push ~/test_photos/shelter_records.jpg /sdcard/Download
 
     - name: Shut down the emulator
       ansible.builtin.shell: |
