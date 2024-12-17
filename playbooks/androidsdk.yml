@@ -28,6 +28,10 @@
         line: '%admin ALL=(ALL) NOPASSWD: ALL'
         validate: 'visudo -cf %s'
 
+    - name: Configure automatic login
+      become: yes
+      command: sudo defaults write /Library/Preferences/com.apple.loginwindow autoLoginUser {{ user }}
+
     - name: Check if Spotlight is enabled
       command: mdutil -s /
       register: spotlight_status
