@@ -200,9 +200,10 @@
       with_items:
         - { regexp: '^hw.ramSize = ', line: 'hw.ramSize = 4096M' }
         - { regexp: '^vm.heapSize = ', line: 'vm.heapSize = 512M' }
-        - { regexp: '^fastboot.forceChosenSnapshotBoot = ', line: 'fastboot.forceChosenSnapshotBoot = yes' }
-        - { regexp: '^fastboot.forceColdBoot = ', line: 'fastboot.forceColdBoot = no' }
-      
+        - { regexp: '^fastboot.forceChosenSnapshotBoot = ', line: 'fastboot.forceChosenSnapshotBoot = no' }
+        - { regexp: '^fastboot.forceColdBoot = ', line: 'fastboot.forceColdBoot = yes' }
+        - { regexp: '^fastboot.forceFastBoot = ', line: 'fastboot.forceFastBoot = yes' }
+
     - name: Start the Maestro_Pixel_6_API_34_1 emulator asynchronously
       ansible.builtin.shell: |
         {{ android_sdk_path }}/emulator/emulator -avd Maestro_Pixel_6_API_34_1
@@ -225,4 +226,4 @@
 
     - name: Shut down the emulator
       ansible.builtin.shell: |
-        {{ android_sdk_path }}/platform-tools/adb emu kill
+        {{ android_sdk_path }}/platform-tools/adb shell reboot -p
