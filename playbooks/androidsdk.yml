@@ -167,6 +167,7 @@
           org.gradle.parallel=true
           org.gradle.configureondemand=true
           org.gradle.daemon=false
+          reactNativeArchitectures=arm64-v8a
         dest: "{{ ansible_env.HOME }}/.gradle/gradle.properties"
 
     # - name: Install Android SDK components and NDK
