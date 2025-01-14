@@ -163,7 +163,7 @@
     - name: Configure the global .gradle.properties file
       ansible.builtin.copy:
         content: |
-          org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8
+          org.gradle.jvmargs=-Xmx2g -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8
           org.gradle.parallel=true
           org.gradle.configureondemand=true
           org.gradle.daemon=false
