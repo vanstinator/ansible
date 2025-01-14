@@ -155,6 +155,20 @@
       args:
         creates: "{{ android_sdk_path }}/emulator"
 
+    - name: Ensure .gradle directory exists
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.gradle"
+        state: directory
+
+    - name: Configure the global .gradle.properties file
+      ansible.builtin.copy:
+        content: |
+          org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8
+          org.gradle.parallel=true
+          org.gradle.configureondemand=true
+          org.gradle.daemon=false
+        dest: "{{ ansible_env.HOME }}/.gradle/gradle.properties"
+
     # - name: Install Android SDK components and NDK
     #   ansible.builtin.shell: |
     #       yes | {{ android_sdk_path }}/cmdline-tools/latest/bin/sdkmanager "platform-tools"
