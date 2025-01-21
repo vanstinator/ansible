@@ -15,18 +15,17 @@
     android_ndk_path: "{{ android_sdk_path }}/ndk/{{ android_ndk_version }}"
 
   tasks:
-
     - name: Set macOS volume to 0
-      ansible.builtin.command: osascript -e 'set volume 0' 
+      ansible.builtin.command: osascript -e 'set volume 0'
 
     - name: Make users passwordless for sudo in group runner
       become: yes
       lineinfile:
         path: /etc/sudoers
         state: present
-        regexp: '^%admin'
-        line: '%admin ALL=(ALL) NOPASSWD: ALL'
-        validate: 'visudo -cf %s'
+        regexp: "^%admin"
+        line: "%admin ALL=(ALL) NOPASSWD: ALL"
+        validate: "visudo -cf %s"
 
     - name: Configure automatic login
       become: yes
@@ -55,7 +54,7 @@
 
     - name: brew install Temurin JDK 17
       community.general.homebrew:
-        name: 
+        name:
           - temurin@17
         state: present
 
@@ -79,13 +78,13 @@
       file:
         path: "{{ android_sdk_path }}"
         state: directory
-        mode: '0755'
+        mode: "0755"
 
     - name: Create Android SDK cmdline-tools directory
       file:
         path: "{{ android_sdk_path }}/cmdline-tools"
         state: directory
-        mode: '0755'
+        mode: "0755"
 
     - name: Extract Android SDK tools
       unarchive:
@@ -108,9 +107,11 @@
         - { var: "ANDROID_HOME", value: "{{ android_sdk_path }}" }
         - { var: "ANDROID_SDK_ROOT", value: "{{ android_sdk_path }}" }
         - { var: "ANDROID_NDK_HOME", value: "{{ android_ndk_path }}" }
-        - { var: "EAS_LOCAL_BUILD_WORKINGDIR", value: "/Users/runner/actions-runner/_work/rescuebase2/rescuebase2/eas" }
+        - {
+            var: "EAS_LOCAL_BUILD_WORKINGDIR",
+            value: "/Users/runner/actions-runner/_work/rescuebase2/rescuebase2/eas",
+          }
 
-        
     - name: Add Homebrew shellenv to .zshenv
       ansible.builtin.lineinfile:
         path: "{{ ansible_env.HOME }}/.zshenv"
@@ -163,7 +164,7 @@
     - name: Configure the global .gradle.properties file
       ansible.builtin.copy:
         content: |
-          org.gradle.jvmargs=-Xmx2g -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8
+          org.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8
           org.gradle.parallel=true
           org.gradle.configureondemand=true
           org.gradle.daemon=false
@@ -194,13 +195,13 @@
         recurse: yes
         owner: "{{ ansible_user_id }}"
         group: "staff"
-        mode: 'u+rwX,g+rX,o+rX'
+        mode: "u+rwX,g+rX,o+rX"
 
     - name: Create test_photos directory
       ansible.builtin.file:
         path: "~/test_photos"
         state: directory
-  
+
     - name: Copy the shelter_records.jpg file from this repo to the machine test_photos directory
       ansible.builtin.copy:
         src: "./shelter_records.jpg"
@@ -213,11 +214,20 @@
         line: "{{ item.line }}"
         backup: yes
       with_items:
-        - { regexp: '^hw.ramSize = ', line: 'hw.ramSize = 4096M' }
-        - { regexp: '^vm.heapSize = ', line: 'vm.heapSize = 512M' }
-        - { regexp: '^fastboot.forceChosenSnapshotBoot = ', line: 'fastboot.forceChosenSnapshotBoot = no' }
-        - { regexp: '^fastboot.forceColdBoot = ', line: 'fastboot.forceColdBoot = yes' }
-        - { regexp: '^fastboot.forceFastBoot = ', line: 'fastboot.forceFastBoot = yes' }
+        - { regexp: "^hw.ramSize = ", line: "hw.ramSize = 4096M" }
+        - { regexp: "^vm.heapSize = ", line: "vm.heapSize = 512M" }
+        - {
+            regexp: "^fastboot.forceChosenSnapshotBoot = ",
+            line: "fastboot.forceChosenSnapshotBoot = no",
+          }
+        - {
+            regexp: "^fastboot.forceColdBoot = ",
+            line: "fastboot.forceColdBoot = yes",
+          }
+        - {
+            regexp: "^fastboot.forceFastBoot = ",
+            line: "fastboot.forceFastBoot = yes",
+          }
 
     - name: Start the Maestro_Pixel_6_API_34_1 emulator asynchronously
       ansible.builtin.shell: |
@@ -234,7 +244,7 @@
       retries: 12
       delay: 10
       until: emulator_start.rc == 0
-        
+
     - name: Push the shelter_records.jpg file to the emulator
       ansible.builtin.shell: |
         {{ android_sdk_path }}/platform-tools/adb push ~/test_photos/shelter_records.jpg /sdcard/Download
