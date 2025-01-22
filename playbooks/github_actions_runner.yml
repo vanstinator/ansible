@@ -51,10 +51,18 @@
     - name: Create the restart.sh script
       ansible.builtin.copy:
         content: |
-          cd /Users/runner/actions-runner/{{ gh_runner_version }}/{{ gh_runner_config_url | hash('sha256') }}
-          sleep 7
-          ./svc.sh stop
-          sudo shutdown -r +7s
+          #!/bin/bash
+
+          shopt -u huponexit
+
+          cleanup_and_restart() {
+            sh -c 'tail -f _diag/$(cd _diag &&ls -t | grep Worker | head -1) | { sed "/.*Raising job completed.*/ q" && kill $$ ;}'
+            sleep 2
+            ./svc.sh stop
+            sudo shutdown -r +2s
+          }
+
+          echo "$@" | grep -q -- "--nohup" && cleanup_and_restart || nohup $0 "$@" --nohup &
         dest: "/Users/runner/actions-runner/{{ gh_runner_version }}/{{ gh_runner_config_url | hash('sha256') }}/restart.sh"
         mode: "0755"
 
