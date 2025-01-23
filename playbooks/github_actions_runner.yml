@@ -56,8 +56,9 @@
           shopt -u huponexit
 
           cleanup_and_restart() {
-            sh -c 'tail -f _diag/$(cd _diag &&ls -t | grep Worker | head -1) | { sed "/.*Raising job completed.*/ q" && kill $$ ;}'
-            sleep 2
+            cd /Users/runner/actions-runner/{{ gh_runner_version }}/{{ gh_runner_config_url | hash('sha256') }}
+            sh -c 'tail -f _diag/$(cd _diag && ls -t | grep Worker | head -1) | { sed "/.*Raising job completed.*/ q" && kill $$ ;}'
+            #sleep 1
             ./svc.sh stop
             sudo shutdown -r +2s
           }
