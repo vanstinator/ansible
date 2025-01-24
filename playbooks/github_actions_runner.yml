@@ -53,17 +53,31 @@
         content: |
           #!/bin/bash
 
-          shopt -u huponexit
+          # If not running in background, restart in background and exit
+          if [[ -z "$NOHUP" ]]; then
+            export NOHUP=1
+            nohup "$0" &
+            disown
+            exit 0
+          fi
 
-          cleanup_and_restart() {
-            cd /Users/runner/actions-runner/{{ gh_runner_version }}/{{ gh_runner_config_url | hash('sha256') }}
-            sh -c 'tail -f _diag/$(cd _diag && ls -t | grep Worker | head -1) | { sed "/.*Raising job completed.*/ q" && kill $$ ;}'
-            #sleep 1
-            ./svc.sh stop
-            sudo shutdown -r +2s
-          }
+          # Enable error handling
+          set -e
 
-          echo "$@" | grep -q -- "--nohup" && cleanup_and_restart || nohup $0 "$@" --nohup &
+          # Define the runner directory
+          RUNNER_DIR="/Users/runner/actions-runner/{{ gh_runner_version }}/{{ gh_runner_config_url | hash('sha256') }}"
+
+          # Change to runner directory
+          cd "${RUNNER_DIR}"
+
+          # Wait for current job to complete
+          sh -c 'tail -f _diag/$(cd _diag && ls -t | grep Worker | head -1) | { sed "/.*Raising job completed.*/ q" && kill $$ ;}' || true
+
+          # Schedule restart
+          sudo shutdown -r +15s
+
+          # Stop the service
+          ./svc.sh stop
         dest: "/Users/runner/actions-runner/{{ gh_runner_version }}/{{ gh_runner_config_url | hash('sha256') }}/restart.sh"
         mode: "0755"
 
