@@ -1,0 +1,11 @@
+---
+# Default system user
+system_user: "runner"
+
+# System configuration
+disable_spotlight: true
+disable_sleep: true
+system_volume: 0
+
+# Common paths
+user_home: "/Users/{{ system_user }}"
