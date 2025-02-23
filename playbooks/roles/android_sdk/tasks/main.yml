@@ -1,0 +1,83 @@
+---
+- name: Install Java
+  community.general.homebrew:
+    name: "{{ java_version }}"
+    state: present
+
+- name: Install additional dependencies
+  community.general.homebrew:
+    name: "{{ brew_packages }}"
+    state: present
+    update_homebrew: yes
+
+- name: Download Android SDK tools
+  get_url:
+    url: "https://dl.google.com/android/repository/commandlinetools-mac-{{ android_sdk_version }}_latest.zip"
+    dest: "/tmp/android-sdk.zip"
+    checksum: "{{ android_sdk_checksum }}"
+
+- name: Create Android SDK directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - "{{ android_sdk_path }}"
+    - "{{ android_cmdline_tools_path }}"
+
+- name: Extract Android SDK tools
+  unarchive:
+    src: "/tmp/android-sdk.zip"
+    dest: "{{ android_cmdline_tools_path }}"
+    remote_src: yes
+
+- name: Rename cmdline-tools directory
+  command: mv {{ android_cmdline_tools_path }}/cmdline-tools {{ android_cmdline_tools_path }}/latest
+  args:
+    creates: "{{ android_cmdline_tools_path }}/latest"
+
+- name: Set up Android SDK environment variables
+  lineinfile:
+    path: "{{ user_home }}/.zshenv"
+    regexp: "^export {{ item.var }}=.*"
+    line: "export {{ item.var }}={{ item.value }}"
+    create: yes
+  loop:
+    - { var: "ANDROID_HOME", value: "{{ android_sdk_path }}" }
+    - { var: "ANDROID_SDK_ROOT", value: "{{ android_sdk_path }}" }
+    - { var: "ANDROID_NDK_HOME", value: "{{ android_ndk_path }}" }
+
+- name: Set up PATH environment variable
+  lineinfile:
+    path: "{{ user_home }}/.zshenv"
+    regexp: "^export PATH=.*"
+    line: "export PATH={{ android_paths | join(':') }}:$PATH"
+    create: yes
+  vars:
+    android_paths:
+      - "{{ android_cmdline_tools_path }}/latest/bin"
+      - "{{ android_sdk_path }}/platform-tools"
+      - "{{ android_ndk_path }}"
+
+- name: Accept Android SDK licenses
+  command: "echo y | {{ android_cmdline_tools_path }}/latest/bin/sdkmanager --licenses"
+  changed_when: false
+
+- name: Ensure .gradle directory exists
+  file:
+    path: "{{ user_home }}/.gradle"
+    state: directory
+
+- name: Configure gradle.properties
+  template:
+    src: gradle.properties.j2
+    dest: "{{ user_home }}/.gradle/gradle.properties"
+
+- name: Ensure correct permissions for Android SDK directory
+  file:
+    path: "{{ android_sdk_path }}"
+    state: directory
+    recurse: yes
+    owner: "{{ ansible_user_id }}"
+    group: "staff"
+    mode: "u+rwX,g+rX,o+rX"

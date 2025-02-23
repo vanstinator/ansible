@@ -1,0 +1,9 @@
+---
+# Node.js tools configuration
+node_packages:
+  - node
+  - yarn
+
+npm_global_packages:
+  - name: eas-cli
+    version: "10.2.1"

@@ -1,0 +1,9 @@
+---
+- name: Configure macOS development environment
+  hosts: all
+  roles:
+    - role: common
+    - role: macos_config
+    - role: node_tools
+    - role: android_sdk
+    - role: github_runner

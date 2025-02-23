@@ -1,0 +1,13 @@
+---
+- name: Install Node.js and Yarn
+  community.general.homebrew:
+    name: "{{ node_packages }}"
+    state: present
+    force_formula: yes
+
+- name: Install global NPM packages
+  npm:
+    name: "{{ item.name }}@{{ item.version }}"
+    global: yes
+    state: present
+  loop: "{{ npm_global_packages }}"

@@ -1,0 +1,40 @@
+---
+- name: Set macOS volume
+  ansible.builtin.command: osascript -e 'set volume {{ system_volume }}'
+  when: system_volume is defined
+
+- name: Make users passwordless for sudo in group admin
+  become: yes
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: "^%admin"
+    line: "%admin ALL=(ALL) NOPASSWD: ALL"
+    validate: "visudo -cf %s"
+
+- name: Check if Spotlight is enabled
+  command: mdutil -s /
+  register: spotlight_status
+  changed_when: false
+  when: disable_spotlight | bool
+
+- name: Disable Spotlight
+  command: sudo mdutil -a -i off
+  when:
+    - disable_spotlight | bool
+    - "'Indexing enabled.' in spotlight_status.stdout"
+
+- name: Check if sleep is enabled
+  become: yes
+  ansible.builtin.shell: pmset -g | grep hibernatemode
+  register: sleep_status
+  changed_when: false
+  ignore_errors: yes
+  when: disable_sleep | bool
+
+- name: Disable sleep
+  become: yes
+  command: sudo pmset -a hibernatemode 0
+  when:
+    - disable_sleep | bool
+    - "'hibernatemode 3' in sleep_status.stdout"
